@@ -15,9 +15,10 @@ function Bulb({ settings, onToggle }) {
         borderRadius: 20,
         transition: "0.3s ease",
         boxShadow: settings.isOn ? `0px 0px 40px ${settings.color}` : "none",
+        cursor: "pointer",
       }}
     >
-      {settings.isOn ? "ON" : "OFF"}
+      {settings.isOn ? "" : "OFF"}
     </div>
   );
 }
