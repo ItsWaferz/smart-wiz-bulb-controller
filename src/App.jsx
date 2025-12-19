@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Bulb from "./Bulb";
 import Card from "./Card";
+import * as Icons from "lucide-react";
 
 function App() {
   const [bulbSettings, setBulb] = useState({
@@ -10,15 +11,51 @@ function App() {
   });
 
   let scenes = [
-    { id: 1, name: "Relax", color: "#ffa500", brightness: 70 },
-    { id: 2, name: "Focus", color: "#ffffff", brightness: 100 },
-    { id: 3, name: "Night Light", color: "#0000ff", brightness: 30 },
+    {
+      id: 1,
+      name: "Relax",
+      color: "#ffa500",
+      brightness: 70,
+      icon: Icons.Armchair,
+    },
+    {
+      id: 2,
+      name: "Focus",
+      color: "#ffffff",
+      brightness: 100,
+      icon: Icons.Book,
+    },
+    {
+      id: 3,
+      name: "Night Light",
+      color: "#0000ff",
+      brightness: 30,
+      icon: Icons.Moon,
+    },
   ];
 
   let colors = [
-    { id: 1, name: "Red", color: "#ff0000", brightness: 60 },
-    { id: 2, name: "Green", color: "#00ff00", brightness: 60 },
-    { id: 3, name: "Blue", color: "#0000ff", brightness: 60 },
+    {
+      id: 1,
+      name: "Red",
+      color: "#ff0000",
+      brightness: 60,
+      backgroundColor: "#ff0000",
+    },
+    {
+      id: 2,
+      name: "Green",
+      color: "#00ff00",
+      brightness: 60,
+      backgroundColor: "#00ff00",
+    },
+    {
+      id: 3,
+      name: "Blue",
+      color: "#0000ff",
+      brightness: 60,
+      backgroundColor: "#0000ff",
+    },
   ];
 
   const handleSceneChange = (scene) => {
@@ -44,9 +81,16 @@ function App() {
         onToggle={() => setBulb((prev) => ({ ...prev, isOn: !prev.isOn }))}
       />
 
-      <Card title="Scenes" content={scenes} onItemClick={handleSceneChange} />
+      <div className="cards-container">
+        <Card
+          title="Scenes"
+          content={scenes}
+          onItemClick={handleSceneChange}
+          customClass="scenes"
+        />
 
-      <Card title="Colors" content={colors} onItemClick={handleSceneChange} />
+        <Card title="Colors" content={colors} onItemClick={handleSceneChange} />
+      </div>
 
       <input
         type="range"

@@ -1,11 +1,16 @@
-function Card({ title, content, onItemClick }) {
+function Card({ title, content, onItemClick, customClass }) {
   return (
-    <div className="card">
-      <h2 className="card-title">{title}</h2>
+    <div className={`card ${customClass}`}>
       <ul className="card-content">
         {content.map((item) => (
-          <li key={item.id} onClick={() => onItemClick(item)}>
-            {item.name}
+          <li
+            style={{
+              backgroundColor: item.backgroundColor,
+            }}
+            key={item.id}
+            onClick={() => onItemClick(item)}
+          >
+            {item.icon && <item.icon className="card-icon" />}
           </li>
         ))}
       </ul>
