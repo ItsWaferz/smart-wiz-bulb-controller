@@ -1,4 +1,6 @@
-function Card({ title, content, onItemClick, customClass }) {
+import { Pencil } from "lucide-react";
+
+function Card({ content, onItemClick, customClass }) {
   return (
     <div className={`card ${customClass}`}>
       <ul className="card-content">
@@ -11,6 +13,15 @@ function Card({ title, content, onItemClick, customClass }) {
             onClick={() => onItemClick(item)}
           >
             {item.icon && <item.icon className="card-icon" />}
+            <button
+              className="edit-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditClick(item.id);
+              }}
+            >
+              <Pencil className="edit-btn-icon" />
+            </button>
           </li>
         ))}
       </ul>

@@ -59,6 +59,7 @@ body {
 }
 
 .card-content li {
+  position: relative;
   padding: 3px;
   border: 2px solid black;
   margin-top: 10px;
@@ -100,4 +101,27 @@ body {
 .card-icon {
   width: 8dvw;
   height: 8dvw;
+}
+
+.edit-btn {
+  display: none;
+  position: absolute;
+  top: -1dvh;
+  right: -1dvh;
+  border: none;
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  width: 7dvw;
+  height: 7dvw;
+}
+
+.editable .edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-btn-icon {
+  height: 4dvw;
 }
