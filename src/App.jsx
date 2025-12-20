@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Bulb from "./Bulb";
 import Card from "./Card";
-import * as Icons from "lucide-react";
+import { Sun, Heart, Moon, Tv2 } from "lucide-react";
 
 function App() {
   const [bulbSettings, setBulb] = useState({
@@ -13,24 +13,31 @@ function App() {
   let scenes = [
     {
       id: 1,
-      name: "Relax",
-      color: "#ffa500",
-      brightness: 70,
-      icon: Icons.Armchair,
+      name: "Daylight",
+      color: "#eef5ffff",
+      brightness: 90,
+      icon: Sun,
     },
     {
       id: 2,
-      name: "Focus",
-      color: "#ffffff",
-      brightness: 100,
-      icon: Icons.Book,
+      name: "Night Light",
+      color: "#b1b1b150",
+      brightness: 30,
+      icon: Moon,
     },
     {
       id: 3,
-      name: "Night Light",
-      color: "#0000ff",
-      brightness: 30,
-      icon: Icons.Moon,
+      name: "Romance",
+      color: "#6600ffff",
+      brightness: 70,
+      icon: Heart,
+    },
+    {
+      id: 4,
+      name: "Tv Time",
+      color: "#0059ffff",
+      brightness: 100,
+      icon: Tv2,
     },
   ];
 
@@ -55,6 +62,13 @@ function App() {
       color: "#0000ff",
       brightness: 60,
       backgroundColor: "#0000ff",
+    },
+    {
+      id: 4,
+      name: "Yellow",
+      color: "#ffff00",
+      brightness: 60,
+      backgroundColor: "#ffff00",
     },
   ];
 
@@ -82,14 +96,14 @@ function App() {
       />
 
       <div className="cards-container">
-        <Card
-          title="Scenes"
-          content={scenes}
-          onItemClick={handleSceneChange}
-          customClass="scenes"
-        />
+        <Card title="Scenes" content={scenes} onItemClick={handleSceneChange} />
 
-        <Card title="Colors" content={colors} onItemClick={handleSceneChange} />
+        <Card
+          title="Colors"
+          content={colors}
+          onItemClick={handleSceneChange}
+          customClass="editable"
+        />
       </div>
 
       <input
