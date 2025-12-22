@@ -21,6 +21,8 @@ function App() {
 
   const [tempId, setTempId] = useState(null);
 
+  const [isClosing, setIsClosing] = useState(false);
+
   const initialScenes = [
     {
       id: "scene-1",
@@ -138,7 +140,7 @@ function App() {
   };
 
   const handleSave = () => {
-    let updatedColors = colors.map((s) =>
+    const updatedColors = colors.map((s) =>
       s.id === editingItem.id
         ? { ...s, color: tempColor, backgroundColor: tempColor }
         : s
@@ -147,13 +149,20 @@ function App() {
     setColors(updatedColors);
     handleColorChange(tempColor);
     setSelectedId(tempId);
-    setIsEditOpen(false);
+
+    closeModal();
+  };
+
+  const closeModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsEditOpen(false);
+      setIsClosing(false);
+    }, 300);
   };
 
   return (
     <div className="app">
-      <h1>Smart Wiz Controller</h1>
-
       <Bulb
         settings={bulbSettings}
         onToggle={() => setBulb((prev) => ({ ...prev, isOn: !prev.isOn }))}
@@ -178,8 +187,11 @@ function App() {
       </div>
 
       {isEditOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div
+          className={`modal-overlay ${isClosing ? "closing" : ""}`}
+          onClick={() => setIsEditOpen(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="custom-picker">
               <HexColorPicker color={tempColor} onChange={setTempColor} />
             </div>
@@ -187,16 +199,21 @@ function App() {
             <div className="modal-actions">
               <button
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
-                  setIsEditOpen(false);
+
+                  closeModal();
                 }}
                 className="cancel-btn"
               >
                 Cancel
               </button>
+
               <button
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
+
                   handleSave();
                 }}
                 className="submit-btn"
