@@ -18,7 +18,10 @@ function Toggle({ title, subTitle, onToggle, toggle, onEditClick }) {
           backgroundColor: toggle ? "rgb(32, 50, 73)" : "rgb(70, 103, 140)",
           transition: "0.3s ease",
         }}
-        onClick={onEditClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          onEditClick();
+        }}
         className="routine edit-btn"
       >
         <Pencil className="edit-btn-icon" />

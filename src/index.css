@@ -333,3 +333,39 @@ h2 {
   cursor: pointer;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: var(--secondary-color);
+  box-shadow: 0px 0px 20px var(--secondary-color);
+  border-radius: 15px;
+}
+
+.timer-display input {
+  text-align: center;
+  background-color: transparent;
+  border: none;
+  width: 2.5ch;
+  color: var(--text-color);
+  font-size: 2rem;
+}
+
+.timer-display span {
+  font-size: 2rem;
+}
+input {
+  padding: 0;
+}
