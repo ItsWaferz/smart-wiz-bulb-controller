@@ -3,6 +3,7 @@ import Bulb from "./Bulb";
 import Card from "./Card";
 import Toggle from "./Toggle";
 import ColorPicker from "./ColorPicker";
+import Timer from "./Timer";
 import { Sun, Heart, Moon, Tv2, Sofa, BookMarked } from "lucide-react";
 import { HexColorPicker } from "react-colorful";
 
@@ -31,9 +32,9 @@ function App() {
   const [routineText, setRoutineText] = useState("Circadian");
 
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [isTimerEditOpen, setIsTimerEditOpen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(10);
-  const [lastTime, setLastTime] = useState(10);
+  const [isTimerEditOpen, setIsTimerEditOpen] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(300);
+  const [lastTime, setLastTime] = useState(300);
 
   const [colorPickerStatus, setColorPickerStatus] = useState("colors");
 
@@ -165,13 +166,15 @@ function App() {
   const [routine, setRoutine] = useState(initialRoutine);
   const [tempRoutine, setTempRoutine] = useState(routine);
   const formatTime = (seconds) => {
-    console.log(seconds);
     seconds = parseInt(seconds);
-    const mins = Math.floor(seconds / 60)
+    const hours = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const mins = Math.floor(seconds / 60 - hours * 60)
       .toString()
       .padStart(2, "0");
     const secs = (seconds % 60).toString().padStart(2, "0");
-    return `${mins}:${secs}`;
+    return `${hours != "00" ? hours + ":" : ""}${mins}:${secs}`;
   };
 
   const isTimeInInterval = (now, start, end) => {
@@ -330,7 +333,9 @@ function App() {
           subTitle={formatTime(timeLeft)}
           onToggle={handleTimer}
           toggle={isTimerActive}
-          onEditClick={handleRoutineEdit}
+          onEditClick={() => {
+            setIsTimerEditOpen(true);
+          }}
         />
       </div>
 
@@ -414,6 +419,17 @@ function App() {
             </div>
           </div>
         </div>
+      )}
+
+      {isTimerEditOpen && (
+        <Timer
+          isOpen={setIsTimerEditOpen}
+          time={lastTime}
+          updateTime={(time) => {
+            setTimeLeft(time);
+            setLastTime(time);
+          }}
+        />
       )}
 
       <input
