@@ -92,7 +92,7 @@ body {
 
 .brightness-slider {
   -webkit-appearance: none;
-  width: 90%;
+  width: calc(5dvw + 80px + 48dvw + 6dvw + 10px);
   height: 8px;
   background: var(--text-color);
   border-radius: 5px;
@@ -160,7 +160,9 @@ body {
   background: var(--background-color);
   padding: 25px;
   border-radius: 15px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal-actions {
@@ -275,12 +277,12 @@ h2 {
 
 .rotuine-list {
   list-style: none;
-  padding: 0 15px;
+  padding: 0 10px;
 }
 
 .rotuine-list li {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: space-between;
   align-items: center;
   margin: 15px 0;
@@ -343,7 +345,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-
+.rli,
 .timer-display {
   display: flex;
   align-items: center;
@@ -352,6 +354,22 @@ input[type="number"] {
   background-color: var(--secondary-color);
   box-shadow: 0px 0px 20px var(--secondary-color);
   border-radius: 15px;
+}
+
+.rli {
+  padding: 20px;
+}
+
+.invalid {
+  border: 3px solid red;
+  padding: 17px;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.71);
+}
+
+.disabled {
+  background-color: grey;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .timer-display input {
