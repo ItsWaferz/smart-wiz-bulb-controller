@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import Slider from "./Slider";
 
 function ColorPicker({
   tempColor,
+  tempBrightness,
   elements,
   isOpen,
   setElements,
   handleColorChange,
+  handleBirightnessChange,
   setSelectedId,
   tempId,
   updateBulb,
@@ -14,6 +17,7 @@ function ColorPicker({
   const [isClosing, setIsClosing] = useState(false);
   const [colorPickerStatus, setColorPickerStatus] = useState("colors");
   const [kelvin, setKelvin] = useState(4000);
+  const [newBrightness, setNewBrightness] = useState(tempBrightness);
 
   const closeModal = () => {
     setIsClosing(true);
@@ -34,6 +38,7 @@ function ColorPicker({
       else if (kelvin >= 5500) whiteTemp = "#85b8ffff";
       else whiteTemp = "#ffffff";
     }
+    console.log(tempBrightness);
     const updatedColors = elements.map((s) =>
       s.id == tempId
         ? {
@@ -41,12 +46,17 @@ function ColorPicker({
             color: colorPickerStatus == "whites" ? whiteTemp : tempColor,
             backgroundColor:
               colorPickerStatus == "whites" ? whiteTemp : tempColor,
+            brightness: newBrightness,
           }
         : s
     );
+    console.log(updatedColors);
 
     setElements(updatedColors);
-    if (updateBulb) handleColorChange(tempColor);
+    if (updateBulb) {
+      handleColorChange(tempColor);
+      handleBirightnessChange(newBrightness);
+    }
     setSelectedId(tempId);
 
     closeModal();
@@ -107,6 +117,14 @@ function ColorPicker({
             ></input>
           </div>
         )}
+        <br></br>
+        <Slider
+          style={{ width: "100%" }}
+          value={newBrightness}
+          onChange={(val) => {
+            setNewBrightness(val);
+          }}
+        />
         <div className="modal-actions">
           <button
             onClick={(e) => {

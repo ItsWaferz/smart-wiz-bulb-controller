@@ -47,8 +47,8 @@ function Timer({ isOpen, time, updateTime }) {
         <div className="timer-display">
           <input
             inputMode="numeric"
-            type="text" // Text e mai stabil pentru cursor positioning
-            onFocus={(e) => e.target.select()} // Mai simplu: selectează tot la focus
+            type="text"
+            onFocus={(e) => e.target.select()}
             value={formatDisplay(hours)}
             onChange={(e) => handleInputChange(e, setHours, 24)}
             style={{ color: hours > 0 ? "aliceblue" : "gray" }}

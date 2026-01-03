@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import Bulb from "./Bulb";
 import Card from "./Card";
 import Toggle from "./Toggle";
 import ColorPicker from "./ColorPicker";
 import Timer from "./Timer";
-import { Sun, Heart, Moon, Tv2, Sofa, BookMarked } from "lucide-react";
-import { HexColorPicker } from "react-colorful";
+import Interval from "./Interval";
+import Slider from "./Slider";
+import { Pencil, Sun, Heart, Moon, Tv2, Sofa, BookMarked } from "lucide-react";
 
 function App() {
   const [bulbSettings, setBulb] = useState({
@@ -29,16 +30,17 @@ function App() {
 
   const [isRoutineActive, setIsRoutineActive] = useState(true);
   const [isRoutineEditOpen, setIsRoutineEditOpen] = useState(false);
+  const [isRoutineTimeEditOpen, setIsRoutineTimeEditOpen] = useState(false);
   const [routineText, setRoutineText] = useState("Circadian");
+  const [tempStartTime, setTempStartTime] = useState("");
+  const [tempEndTime, setTempEndTime] = useState("");
+  const [invalidIds, setInvalidIds] = useState(new Set());
+  const [editingRoutine, setEditingRoutine] = useState(null);
 
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [isTimerEditOpen, setIsTimerEditOpen] = useState(true);
+  const [isTimerEditOpen, setIsTimerEditOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300);
   const [lastTime, setLastTime] = useState(300);
-
-  const [colorPickerStatus, setColorPickerStatus] = useState("colors");
-
-  const [kelvin, setKelvin] = useState(4000);
 
   const initialScenes = [
     {
@@ -178,7 +180,6 @@ function App() {
   };
 
   const isTimeInInterval = (now, start, end) => {
-    console.log(now, start, end);
     if (start > end) return start <= now || now < end;
     return start <= now && now < end;
   };
@@ -266,10 +267,10 @@ function App() {
     setIsRoutineActive(false);
   };
 
-  const handleBrightnessChange = (e) => {
-    const newValue = e.target.value;
-    if (newValue == 0) setBulb({ ...bulbSettings, isOn: false, brightness: 0 });
-    else setBulb({ ...bulbSettings, isOn: true, brightness: newValue });
+  const handleBrightnessChange = (brightness) => {
+    if (brightness == 0)
+      setBulb({ ...bulbSettings, isOn: false, brightness: 0 });
+    else setBulb({ ...bulbSettings, isOn: true, brightness: brightness });
   };
 
   const handleEditClick = (item) => {
@@ -287,6 +288,7 @@ function App() {
   };
 
   const handleRoutineEdit = () => {
+    checkRoutineTimes(tempRoutine);
     setIsRoutineEditOpen(true);
   };
 
@@ -298,6 +300,86 @@ function App() {
       setBulb((prev) => ({ ...prev, isOn: true }));
       setIsTimerActive(true);
     }
+  };
+
+  const handleRoutineTimeChange = (newStartTime, newEndTime) => {
+    const len = tempRoutine.length;
+
+    const currentIndex = tempRoutine.findIndex((r) => r.id == editingRoutine);
+    const prevIndex = (currentIndex - 1 + len) % len;
+    const nextIndex = (currentIndex + 1) % len;
+
+    const updatedRoutine = tempRoutine.map((r, index) => {
+      if (index == currentIndex) {
+        return { ...r, startTime: newStartTime, endTime: newEndTime };
+      }
+
+      // if (index == prevIndex) {
+      //   return { ...r, endTime: newStartTime };
+      // }
+
+      // if (index == nextIndex) {
+      //   return { ...r, startTime: newEndTime };
+      // }
+
+      return r;
+    });
+
+    setTempRoutine(updatedRoutine);
+    checkRoutineTimes(updatedRoutine);
+  };
+
+  const convertToMinutes = (time) => {
+    return parseInt(
+      time.toString().slice(0, 2) * 60 + parseInt(time.toString().slice(3, 5))
+    );
+  };
+
+  const checkRoutineTimes = (r) => {
+    const intervals = [];
+    const invalidIds = new Set();
+
+    r.forEach((item, index) => {
+      const id = item.id;
+      const start = convertToMinutes(item.startTime);
+      const end = convertToMinutes(item.endTime);
+
+      if (item.endTime != r[index == r.length - 1 ? 0 : index + 1].startTime) {
+        invalidIds.add(id);
+        console.log(
+          id,
+          end,
+          r[index == r.length - 1 ? 0 : index + 1].startTime
+        );
+      }
+
+      if (start === end) {
+        invalidIds.add(id);
+      }
+
+      if (end < start) {
+        intervals.push({ id, start, end: 1440 });
+        intervals.push({ id, start: 0, end });
+      } else {
+        intervals.push({ id, start, end });
+      }
+    });
+
+    intervals.sort((a, b) => a.start - b.start);
+
+    for (let i = 0; i < intervals.length; i++) {
+      for (let j = i + 1; j < intervals.length; j++) {
+        if (
+          intervals[i].end > intervals[j].start &&
+          intervals[i].id !== intervals[j].id
+        ) {
+          invalidIds.add(intervals[i].id);
+          invalidIds.add(intervals[j].id);
+        }
+      }
+    }
+
+    setInvalidIds(invalidIds);
   };
 
   return (
@@ -342,10 +424,12 @@ function App() {
       {isColorEditOpen && (
         <ColorPicker
           tempColor={tempColor}
+          tempBrightness={bulbSettings.brightness}
           elements={colors}
           isOpen={setIsColorEditOpen}
           setElements={setColors}
           handleColorChange={handleColorChange}
+          handleBirightnessChange={handleBrightnessChange}
           setSelectedId={setSelectedId}
           tempId={tempId}
           updateBulb={true}
@@ -355,10 +439,12 @@ function App() {
       {isRoutineColorEditOpen && (
         <ColorPicker
           tempColor={tempColor}
+          tempBrightness={bulbSettings.brightness}
           elements={tempRoutine}
           isOpen={setIsRoutineColorEditOpen}
           setElements={setTempRoutine}
           handleColorChange={handleColorChange}
+          handleBirightnessChange={handleBrightnessChange}
           setSelectedId={setSelectedId}
           tempId={tempId}
           updateBulb={false}
@@ -373,7 +459,10 @@ function App() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <ul className="rotuine-list">
               {tempRoutine.map((r) => (
-                <li key={r.id}>
+                <li
+                  key={r.id}
+                  className={`rli ${invalidIds.has(r.id) ? "invalid" : ""}`}
+                >
                   <button
                     onClick={() => handleRoutineEditClick(r)}
                     style={{
@@ -384,6 +473,20 @@ function App() {
                   <div className="routine-time">
                     {r.startTime} - {r.endTime}
                   </div>
+
+                  <button
+                    className="routine edit-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setTempStartTime(r.startTime);
+                      setTempEndTime(r.endTime);
+                      setEditingRoutine(r.id);
+
+                      setIsRoutineTimeEditOpen(true);
+                    }}
+                  >
+                    <Pencil className="edit-btn-icon" />
+                  </button>
                 </li>
               ))}
             </ul>
@@ -404,6 +507,10 @@ function App() {
               </button>
 
               <button
+                disabled={invalidIds.size > 0}
+                className={
+                  invalidIds.size > 0 ? "submit-btn disabled" : "submit-btn"
+                }
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -412,7 +519,6 @@ function App() {
 
                   closeModal();
                 }}
-                className="submit-btn"
               >
                 Save
               </button>
@@ -432,13 +538,17 @@ function App() {
         />
       )}
 
-      <input
-        type="range"
-        min="0"
-        max="100"
+      {isRoutineTimeEditOpen && (
+        <Interval
+          startTime={tempStartTime}
+          endTime={tempEndTime}
+          isOpen={setIsRoutineTimeEditOpen}
+          handleSave={handleRoutineTimeChange}
+        />
+      )}
+      <Slider
         value={bulbSettings.brightness}
         onChange={handleBrightnessChange}
-        className="brightness-slider"
       />
     </div>
   );
