@@ -11,7 +11,11 @@ body,
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100dvh;
+  min-height: 100dvh;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -24,24 +28,27 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 100%;
+  width: 100%;
+  max-width: 480px;
+  height: 100dvh;
+  max-height: 100dvh;
   padding: 20px;
   box-sizing: border-box;
+  background-color: var(--background-color);
+  transition: all 0.3s ease;
 }
 
 body {
-  margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: var(--text-color);
   background-color: var(--background-color);
-  margin: auto;
 }
 
 .cards-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5dvw;
+  gap: 20px;
 }
 
 .menu,
@@ -59,7 +66,7 @@ body {
   padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3dvw;
+  gap: 15px;
   margin: 0;
 }
 
@@ -71,8 +78,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 12dvw;
-  height: 12dvw;
+  width: 50px;
+  height: 50px;
   margin: 0;
 }
 
@@ -92,7 +99,7 @@ body {
 
 .brightness-slider {
   -webkit-appearance: none;
-  width: calc(5dvw + 80px + 48dvw + 6dvw + 10px);
+  width: 95%;
   height: 8px;
   background: var(--text-color);
   border-radius: 5px;
@@ -113,21 +120,21 @@ body {
 }
 
 .card-icon {
-  width: 8dvw;
+  width: 70%;
   height: 8dvw;
 }
 
 .edit-btn {
   display: none;
   position: absolute;
-  top: -1dvh;
-  right: -1dvh;
+  top: -5px;
+  right: -5px;
   border: none;
   color: var(--text-color);
   background-color: var(--primary-color);
   border-radius: 50%;
-  width: 7dvw;
-  height: 7dvw;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
 }
 
@@ -168,7 +175,7 @@ body {
 .modal-actions {
   margin-top: 20px;
   display: flex;
-  justify-content: space-between;
+  gap: 40px;
 }
 
 .modal-actions button {
@@ -386,4 +393,14 @@ input[type="number"] {
 }
 input {
   padding: 0;
+}
+
+@media (min-width: 600px) {
+  .app {
+    height: 90dvh;
+    max-height: 850px;
+    border-radius: 40px;
+    border: 8px solid var(--secondary-color);
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5);
+  }
 }

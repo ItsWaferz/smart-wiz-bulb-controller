@@ -314,14 +314,6 @@ function App() {
         return { ...r, startTime: newStartTime, endTime: newEndTime };
       }
 
-      // if (index == prevIndex) {
-      //   return { ...r, endTime: newStartTime };
-      // }
-
-      // if (index == nextIndex) {
-      //   return { ...r, startTime: newEndTime };
-      // }
-
       return r;
     });
 
@@ -353,9 +345,9 @@ function App() {
         );
       }
 
-      if (start === end) {
-        invalidIds.add(id);
-      }
+      // if (start === end) {
+      //   invalidIds.add(id);
+      // }
 
       if (end < start) {
         intervals.push({ id, start, end: 1440 });
