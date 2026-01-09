@@ -1,38 +1,37 @@
-#💡 WizBulb Remote
-Hey there! 👋 This is my DIY Smart Home project where I’m building a custom ecosystem to control my lights. No more relying on third-party apps—I'm building my own bridge between the web and physical hardware.
+# 💡 WizBulb Remote
 
-🏠 What’s this about?
+Hey there! 👋 Welcome to my DIY Smart Home project. I'm building a custom ecosystem to control my lights, bridging the gap between a modern web interface and physical hardware.
 
-The goal is to have full control over my smart bulbs through two different channels that work in perfect sync:
+### 🏠 What’s this about?
+The goal is to have full control over my lighting system through two synchronized channels:
+1.  **The Web App:** A clean, responsive dashboard to toggle lights from any device.
+2.  **The Physical Switch:** A custom-built Wi-Fi smart switch that I designed and assembled from scratch.
 
-The Web App: A clean, modern dashboard to toggle lights from any device.
+The "brain" of the operation is an **Arduino** (acting as the central controller). It listens for commands from the React frontend and simultaneously monitors Wi-Fi signals from the physical switch to update the bulb's state in real-time.
 
-The Physical Switch: A custom-built Wi-Fi smart switch that I designed and assembled myself.
+---
 
-The "brain" of the operation is an Arduino (acting as the backend/controller). It listens for commands from the React frontend and simultaneously monitors Wi-Fi signals from the physical switch to update the bulb's state in real-time.
+### 🛠️ Tech Stack
+* **Frontend:** `React.js` (State management, Hooks, Responsive UI).
+* **Hardware/Backend:** `Arduino / C++` (Managing logic and Wi-Fi communication).
+* **Connectivity:** `Wi-Fi` (ESP8266/ESP32) for switch-to-hub communication.
 
-🛠️ Tech Stack
+---
 
-Frontend: React (State management, responsive UI).
+### 🚧 Current Project Status
+This project is currently in active development:
 
-Hardware/Backend: Arduino (C++) managing the logic and Wi-Fi communication.
+- [x] **Frontend:** The React web application is **fully complete**. The UI is polished, and the state logic is ready to send commands.
+- [ ] **Backend & Hardware:** Currently working on the Arduino logic. I'm focusing on handling parallel inputs (app vs. physical switch) to ensure the system stays in sync with zero latency.
 
-Connectivity: Wi-Fi (ESP8266/ESP32) for the switch-to-hub communication.
+---
 
-🚧 Current Project Status
+### 🚀 Roadmap
+* [ ] Finalize the Arduino backend logic for concurrent signal processing.
+* [ ] Optimize the Wi-Fi handshake between the custom switch and the hub.
+* [ ] Implement a "Live Sync" feature using WebSockets for real-time UI updates when the physical switch is flipped.
 
-This project is a Work in Progress:
+---
 
-✅ Frontend: The React web app is fully complete and ready to go. The UI is polished and the state logic is set up.
-
-⏳ Backend & Hardware: I’m currently tinkering with the Arduino logic. I'm focusing on handling parallel inputs (app vs. physical switch) to ensure the system stays in sync without lag.
-
-🚀 Roadmap
-
-Finish the Arduino backend logic.
-
-Optimize the Wi-Fi handshake between the custom switch and the hub.
-
-Add a "Night Mode" or scheduling feature in the React dashboard.
-
-Feel free to poke around the code! If you have any suggestions on how to handle the hardware-software synchronization better, I’m all ears. 🍻
+### 🤝 Contributing
+Feel free to poke around the code! If you have any suggestions on how to handle the hardware-software synchronization or if you've done something similar, I’d love to hear from you. 🍻
