@@ -2,8 +2,6 @@ import { useState } from "react";
 
 function Timer({ isOpen, time, updateTime }) {
   const [isClosing, setIsClosing] = useState(false);
-
-  // Corecție: Folosim Math.floor pentru a evita numerele cu virgulă
   const [hours, setHours] = useState(Math.floor(time / 3600));
   const [minutes, setMinutes] = useState(Math.floor((time % 3600) / 60));
   const [seconds, setSeconds] = useState(time % 60);
@@ -16,19 +14,16 @@ function Timer({ isOpen, time, updateTime }) {
     }, 300);
   };
 
-  // O funcție de formatare mai simplă și sigură
   const formatDisplay = (val) => {
     return val.toString().padStart(2, "0");
   };
 
-  // Gestionăm schimbarea valorii cu limitare la 2 cifre și validare numerică
   const handleInputChange = (e, setter, max) => {
     let val = e.target.value;
 
-    // Luăm doar ultimele 2 cifre introduse
     if (val.length > 2) val = val.slice(-2);
 
-    const num = parseInt(val) || 0; // Prevenim NaN
+    const num = parseInt(val) || 0;
 
     if (num <= max) {
       setter(num);
@@ -80,7 +75,6 @@ function Timer({ isOpen, time, updateTime }) {
 
           <button
             onClick={() => {
-              // Convertim totul înapoi în secunde totale
               const totalSeconds = hours * 3600 + minutes * 60 + seconds;
               updateTime(totalSeconds);
               closeModal();
