@@ -2,6 +2,8 @@
 
 Hey there! 👋 Welcome to my DIY Smart Home project. I'm building a custom ecosystem to control my lights, bridging the gap between a modern web interface and physical hardware.
 
+Check out the current progress here: https://itswaferz.github.io/wiz-bulb-remote/
+
 ### 🏠 What’s this about?
 The goal is to have full control over my lighting system through two synchronized channels:
 1.  **The Web App:** A clean, responsive dashboard to toggle lights from any device.
